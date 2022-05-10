@@ -17,10 +17,6 @@ ram.info()
   .then(info => {
       console.log("RAM:" + info.usedMemPercentage)
   })
-disk.info()
-  .then(info => {
-      console.log("DISK USED:" + info.usedPercentage)
-  })
 }, 1000);
 
 
