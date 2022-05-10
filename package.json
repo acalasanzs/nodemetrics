@@ -1,0 +1,28 @@
+{
+  "name": "nodemetrics",
+  "version": "0.1.0",
+  "description": "metrics",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acalasanzs/nodemetrics.git"
+  },
+  "keywords": [
+    "metrics"
+  ],
+  "author": "Albert Calasanz Sallen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acalasanzs/nodemetrics/issues"
+  },
+  "homepage": "https://github.com/acalasanzs/nodemetrics#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
