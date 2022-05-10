@@ -26,6 +26,7 @@ height = first_monitor.height
 class Interface():
     def __init__(self, gui = True):
         if gui:
+            """ GUI """
             self.root = tk.Tk()
             #Es crea un Tk
             self.frame = tk.Frame(self.root, width='800',height='350', background= colors['bg'])
@@ -36,6 +37,9 @@ class Interface():
             #Prevent resize
             self.root.resizable(width=False, height=False)
             self.root.mainloop()
+        else:
+            """ CLI """
+            pass
     def widgets(self):
         #GRAPHICAL USER INTERFACE
             exit = tk.Button(self.root, 
