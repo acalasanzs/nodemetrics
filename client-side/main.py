@@ -30,11 +30,11 @@ class Interface():
             #Es crea un Tk
             self.frame = tk.Frame(self.root, width='800',height='350', background= colors['bg'])
             self.root.geometry(f'800x350+{int(width/2-400)}+{int(height/2-175)}')
-            self.root.resizable(width=False, height=False)
             self.frame.grid()
             self.widgets()
+            
             #Prevent resize
-
+            self.root.resizable(width=False, height=False)
             self.root.mainloop()
     def widgets(self):
         #GRAPHICAL USER INTERFACE
