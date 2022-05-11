@@ -24,12 +24,11 @@ def update():
 
     """ DISK USAGE """
     statistics["disk"]["partition"] = primary_disk
-    statistics["disk"]["usage"] = psutil.disk_usage(primary_disk).percent
+    statistics["disk"]["percent"] = psutil.disk_usage(primary_disk).percent
 
     """ GPU USAGE """
     if gpu_s > 0:
-        statistics["gpu"]["COUNT"] = gpu_s
-        statistics["gpu"]["PERCENT"] = GPUtil.getGPUs()[0].load * 100
+        statistics["gpu"]["percent"] = GPUtil.getGPUs()[0].load * 100
 
 if __name__ == "__main__":
     update()
