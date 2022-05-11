@@ -24,7 +24,7 @@ from monitor import statistics, update, interval, gpu_s
 
 from screeninfo import get_monitors
 
-from flask import Flask, request
+import requests
 fwidth, fheight = 800, 350
 
 server = 'localhost'
@@ -35,6 +35,10 @@ width = first_monitor.width
 height = first_monitor.height
 
 ms_interval = int(interval*1000)
+
+f = open("server.txt",'r',encoding = 'utf-8')
+f = f.readline()
+server = f if len(f) > 0 else server
 class Interface():
     def __init__(self, gui = True):
         if gui:
@@ -56,7 +60,8 @@ class Interface():
         else:
             """ CLI """
             self.gpu = False
-            while True:
+            self.run = True
+            while self.run:
                 self.update_cli()
                 sleep(interval*4)
             pass
@@ -97,6 +102,7 @@ class Interface():
         self.gpu.pack()
     def update_labels(self):
         update()
+        self.send()
         self.server.configure(text=server)
         self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
         self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
@@ -106,6 +112,7 @@ class Interface():
         self.root.after(ms_interval, self.update_labels)
     def update_cli(self):
         update()
+        self.send()
         self.server = server
         self.cpu = f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%'
         self.mem = f'RAM: {statistics["mem"]["percent"]}%'
@@ -113,15 +120,18 @@ class Interface():
         if gpu_s > 0:
             self.gpu = f'GPU 0: {statistics["gpu"]["percent"]}'
         print(f'Server url: {self.server}\n{self.cpu}\n{self.mem}\n{self.disk}\n{self.gpu if self.gpu else "NO GPU"}\n')
+    def send(self):
+        data = [statistics["cpu"]["percent"], statistics["mem"]["percent"], statistics["disk"]["percent"]]
+        if gpu_s > 0:
+            data.append(statistics["gpu"]["percent"])
+        data = {'usage': data}
+
+        res = requests.post(f'{server}/data', json=data)
+        return res.json()
     def destroy(self):
         """ ***STOP SENDING DATA*** """
-        print("nope")
+        self.run = False
         self.root.destroy()
 
-
-f = open("server.txt",'r',encoding = 'utf-8')
-f = f.readline()
-server = f if len(f) > 0 else server
-web = Flask(server)
 the_app = Interface()
 
