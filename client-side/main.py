@@ -46,12 +46,6 @@ class Interface():
     def __init__(self, gui = True):
         self.connected = None
         self.run = True
-        try:
-            update()
-            self.send()
-            self.connected = True
-        except:
-            self.connected = False
         if gui:
             """ GUI """
             self.root = tk.Tk()
@@ -67,6 +61,7 @@ class Interface():
             
             #Prevent resize
             self.root.resizable(width=False, height=False)
+
             self.root.mainloop()
         else:
             """ CLI """
@@ -113,11 +108,10 @@ class Interface():
     def update_labels(self):
         if self.run:
             update()
-            if self.connected:
-                self.server.configure(text=server)
+            try:
                 result = self.send()
-                print(result.json())
-            else:
+                self.server.configure(text=result.content)
+            except:
                 self.server.configure(text="SERVER NOT FOUND")
             self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
             self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
@@ -125,14 +119,12 @@ class Interface():
             if gpu_s > 0:
                 self.gpu.configure(text=f'GPU 0: {"{:.1f}".format(statistics["gpu"]["percent"])}')
             self.root.after(ms_interval, self.update_labels)
-        
     def update_cli(self):
         update()
-        if self.connected:
+        try:
             result = self.send()
-            print(result.json())
-            self.server = server
-        else:
+            self.server = result
+        except:
             self.server = "(SERVER NOT FOUND) "+server
         self.cpu = f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%'
         self.mem = f'RAM: {statistics["mem"]["percent"]}%'
@@ -147,7 +139,7 @@ class Interface():
         data = {'usage': data}
 
         res = requests.post(f'http://{server}/data', json=data)
-        return res.json()
+        return res
     def destroy(self):
         """ ***STOP SENDING DATA*** """
         self.run = False
