@@ -17,7 +17,7 @@ colors = {
     "blue": '#7ed6df'
 }
 from ast import arg
-from time import sleep
+from time import sleep, time
 import tkinter as tk
 import tkinter.font as tkFont
 import tkinter.ttk as ttk
