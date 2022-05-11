@@ -16,7 +16,6 @@ colors = {
     "red": '#f6e58d',
     "blue": '#7ed6df'
 }
-from flask import Flask, request
 from time import sleep
 import tkinter as tk
 import tkinter.font as tkFont
@@ -25,6 +24,7 @@ from monitor import statistics, update, interval, gpu_s
 
 from screeninfo import get_monitors
 
+from flask import Flask, request
 fwidth, fheight = 800, 350
 
 server = 'localhost'
@@ -122,5 +122,6 @@ class Interface():
 f = open("server.txt",'r',encoding = 'utf-8')
 f = f.readline()
 server = f if len(f) > 0 else server
+web = Flask(server)
 the_app = Interface()
 

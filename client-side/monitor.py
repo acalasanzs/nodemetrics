@@ -30,6 +30,7 @@ def update():
     if gpu_s > 0:
         statistics["gpu"]["percent"] = GPUtil.getGPUs()[0].load * 100
 
+
 if __name__ == "__main__":
     update()
     while True:
