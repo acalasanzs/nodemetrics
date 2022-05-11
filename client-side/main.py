@@ -46,6 +46,7 @@ class Interface():
     def __init__(self, gui = True):
         self.connected = None
         self.run = True
+        self.time = time()
         if gui:
             """ GUI """
             self.root = tk.Tk()
