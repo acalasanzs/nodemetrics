@@ -41,6 +41,13 @@ f = f.readline()
 server = f if len(f) > 0 else server
 class Interface():
     def __init__(self, gui = True):
+        self.connected = None
+        try:
+            update()
+            self.send()
+            self.connected = True
+        except:
+            self.connected = False
         if gui:
             """ GUI """
             self.root = tk.Tk()
@@ -102,18 +109,27 @@ class Interface():
         self.gpu.pack()
     def update_labels(self):
         update()
-        self.send()
-        self.server.configure(text=server)
+        if self.connected:
+            self.server.configure(text=server)
+            result = self.send()
+            print(result.json())
+        else:
+            self.server.configure(text="SERVER NOT FOUND")
         self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
         self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
         self.disk.configure(text=f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%""")
         if gpu_s > 0:
             self.gpu.configure(text=f'GPU 0: {statistics["gpu"]["percent"]}')
         self.root.after(ms_interval, self.update_labels)
+        
     def update_cli(self):
         update()
-        self.send()
-        self.server = server
+        if self.connected:
+            result = self.send()
+            print(result.json())
+            self.server = server
+        else:
+            self.server = "SERVER NOT FOUND"
         self.cpu = f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%'
         self.mem = f'RAM: {statistics["mem"]["percent"]}%'
         self.disk = f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%"""
@@ -126,7 +142,7 @@ class Interface():
             data.append(statistics["gpu"]["percent"])
         data = {'usage': data}
 
-        res = requests.post(f'{server}/data', json=data)
+        res = requests.post(f'http://{server}/data', json=data)
         return res.json()
     def destroy(self):
         """ ***STOP SENDING DATA*** """
