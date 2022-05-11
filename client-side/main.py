@@ -8,13 +8,13 @@ TODO:
     - MAKE 'SEND' FUNCTION FOR THE DATA SEND PROCESS
 """
 colors = {
-    "bg-light": '#dff9fb',
+    "bg-light": '#130f40',
     "bg": '#6c5ce7',
     "gray": '#2d3436',
-    "yellow": '#f0932b',
-    "green": '#6ab04c',
-    "red": '#eb4d4b',
-    "blue": '#0984e3'
+    "yellow": '#dff9fb',
+    "green": '#c7ecee',
+    "red": '#f6e58d',
+    "blue": '#7ed6df'
 }
 from textwrap import fill
 import tkinter as tk
@@ -27,6 +27,8 @@ from screeninfo import get_monitors
 ms_interval = int(interval*1000)
 
 fwidth, fheight = 800, 350
+
+server = 'localhost'
 
 first_monitor = get_monitors()[0]
 
@@ -57,6 +59,12 @@ class Interface():
             pass
     def widgets(self):
         #GRAPHICAL USER INTERFACE
+        self.server = tk.Label(self.frame,
+                bg=colors['bg-light'], 
+                fg=colors['red'],
+                text='CPU USAGE',
+                font=('Roboto',16))
+        self.server.pack()
         self.cpu = tk.Label(self.frame,
                 bg=colors['bg-light'], 
                 fg=colors['yellow'],
@@ -78,17 +86,17 @@ class Interface():
                 font=('Roboto',27))
         self.disk.pack(pady=20)
 
-        if gpu_s > 0:
-            self.gpu = tk.Label(self.frame,
-                    bg=colors['bg-light'], 
-                    fg=colors['blue'],
-                    text='GPU USAGE',
-                    font=('Roboto',27))
-            self.gpu.pack(pady=20)
+        self.gpu = tk.Label(self.frame,
+                bg=colors['bg-light'], 
+                fg=colors['blue'],
+                text='NO GPU FOUND',
+                font=('Roboto',27))
+        self.gpu.pack()
     def update_labels(self):
         update()
+        self.server.configure(text=server)
         self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
-        self.mem.configure(text=f'VIRTUAL MEMORY: {statistics["mem"]["percent"]}%')
+        self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
         self.disk.configure(text=f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%""")
         if gpu_s > 0:
             self.gpu.configure(text=f'GPU 0: {statistics["gpu"]["percent"]}')
@@ -99,5 +107,8 @@ class Interface():
         self.root.destroy()
 
 
+f = open("server.txt",'r',encoding = 'utf-8')
+f = f.readline()
+server = f if len(f) > 0 else server
 the_app = Interface()
 
