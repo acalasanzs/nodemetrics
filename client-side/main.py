@@ -16,10 +16,12 @@ colors = {
     "red": '#f6e58d',
     "blue": '#7ed6df'
 }
+from ast import arg
 from time import sleep
 import tkinter as tk
 import tkinter.font as tkFont
 import tkinter.ttk as ttk
+from sys import argv
 from monitor import statistics, update, interval, gpu_s
 
 from screeninfo import get_monitors
@@ -148,6 +150,8 @@ class Interface():
         """ ***STOP SENDING DATA*** """
         self.run = False
         self.root.destroy()
-
-the_app = Interface()
+if len(argv) > 1:
+    the_app = Interface(False if argv[1] else True)
+else:
+    the_app = Interface()
 
