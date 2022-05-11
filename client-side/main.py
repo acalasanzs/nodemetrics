@@ -114,7 +114,7 @@ class Interface():
             result = self.send()
             print(result.json())
         else:
-            self.server.configure(text="SERVER NOT FOUND: "+server)
+            self.server.configure(text="SERVER NOT FOUND")
         self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
         self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
         self.disk.configure(text=f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%""")
@@ -129,7 +129,7 @@ class Interface():
             print(result.json())
             self.server = server
         else:
-            self.server = "SERVER NOT FOUND"
+            self.server = "(SERVER NOT FOUND) "+server
         self.cpu = f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%'
         self.mem = f'RAM: {statistics["mem"]["percent"]}%'
         self.disk = f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%"""
@@ -149,5 +149,5 @@ class Interface():
         self.run = False
         self.root.destroy()
 
-the_app = Interface(0)
+the_app = Interface()
 
