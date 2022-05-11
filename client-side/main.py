@@ -111,19 +111,20 @@ class Interface():
                 font=('Roboto',27))
         self.gpu.pack()
     def update_labels(self):
-        update()
-        if self.connected:
-            self.server.configure(text=server)
-            result = self.send()
-            print(result.json())
-        else:
-            self.server.configure(text="SERVER NOT FOUND")
-        self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
-        self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
-        self.disk.configure(text=f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%""")
-        if gpu_s > 0:
-            self.gpu.configure(text=f'GPU 0: {"{:.1f}".format(statistics["gpu"]["percent"])}')
-        self.root.after(ms_interval, self.update_labels)
+        if self.run:
+            update()
+            if self.connected:
+                self.server.configure(text=server)
+                result = self.send()
+                print(result.json())
+            else:
+                self.server.configure(text="SERVER NOT FOUND")
+            self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
+            self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
+            self.disk.configure(text=f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%""")
+            if gpu_s > 0:
+                self.gpu.configure(text=f'GPU 0: {"{:.1f}".format(statistics["gpu"]["percent"])}')
+            self.root.after(ms_interval, self.update_labels)
         
     def update_cli(self):
         update()
