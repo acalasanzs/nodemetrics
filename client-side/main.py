@@ -39,8 +39,9 @@ height = first_monitor.height
 ms_interval = int(interval*1000)
 
 f = open("server.txt",'r',encoding = 'utf-8')
-f = f.readline()
-server = f if len(f) > 0 else server
+ft = f.readline()
+f.close()
+server = ft if len(ft) > 0 else server
 class Interface():
     def __init__(self, gui = True):
         self.connected = None
@@ -121,7 +122,7 @@ class Interface():
         self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
         self.disk.configure(text=f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%""")
         if gpu_s > 0:
-            self.gpu.configure(text=f'GPU 0: {statistics["gpu"]["percent"]}')
+            self.gpu.configure(text=f'GPU 0: {"{:.1f}".format(statistics["gpu"]["percent"])}')
         self.root.after(ms_interval, self.update_labels)
         
     def update_cli(self):
@@ -136,12 +137,12 @@ class Interface():
         self.mem = f'RAM: {statistics["mem"]["percent"]}%'
         self.disk = f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%"""
         if gpu_s > 0:
-            self.gpu = f'GPU 0: {statistics["gpu"]["percent"]}'
+            self.gpu = f'GPU 0: {"{:.1f}".format(statistics["gpu"]["percent"])}'
         print(f'Server url: {self.server}\n{self.cpu}\n{self.mem}\n{self.disk}\n{self.gpu if self.gpu else "NO GPU"}\n')
     def send(self):
         data = [statistics["cpu"]["percent"], statistics["mem"]["percent"], statistics["disk"]["percent"]]
         if gpu_s > 0:
-            data.append(statistics["gpu"]["percent"])
+            data.append("{:.3f}".format(statistics["gpu"]["percent"]))
         data = {'usage': data}
 
         res = requests.post(f'http://{server}/data', json=data)
