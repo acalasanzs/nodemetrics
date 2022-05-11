@@ -3,3 +3,4 @@
 
 ## Dependencies
 `npm install -g @vue/cli` Vue Global NPM install
+`pip install -r client-side/requirements.txt` Python requirements
