@@ -17,14 +17,13 @@ colors = {
     "blue": '#7ed6df'
 }
 from textwrap import fill
+from time import sleep
 import tkinter as tk
 import tkinter.font as tkFont
 import tkinter.ttk as ttk
 from monitor import statistics, update, interval, gpu_s
 
 from screeninfo import get_monitors
-
-ms_interval = int(interval*1000)
 
 fwidth, fheight = 800, 350
 
@@ -56,13 +55,17 @@ class Interface():
             self.root.mainloop()
         else:
             """ CLI """
+            self.gpu = False
+            while True:
+                self.update_cli()
+                sleep(interval*4)
             pass
     def widgets(self):
         #GRAPHICAL USER INTERFACE
         self.server = tk.Label(self.frame,
                 bg=colors['bg-light'], 
                 fg=colors['red'],
-                text='CPU USAGE',
+                text='server url',
                 font=('Roboto',16))
         self.server.pack()
         self.cpu = tk.Label(self.frame,
@@ -101,6 +104,15 @@ class Interface():
         if gpu_s > 0:
             self.gpu.configure(text=f'GPU 0: {statistics["gpu"]["percent"]}')
         self.root.after(ms_interval, self.update_labels)
+    def update_cli(self):
+        update()
+        self.server = server
+        self.cpu = f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%'
+        self.mem = f'RAM: {statistics["mem"]["percent"]}%'
+        self.disk = f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%"""
+        if gpu_s > 0:
+            self.gpu = f'GPU 0: {statistics["gpu"]["percent"]}'
+        print(f'Server url: {self.server}\n{self.cpu}\n{self.mem}\n{self.disk}\n{self.gpu if self.gpu else "NO GPU"}\n')
     def destroy(self):
         """ ***STOP SENDING DATA*** """
         print("nope")
@@ -110,5 +122,5 @@ class Interface():
 f = open("server.txt",'r',encoding = 'utf-8')
 f = f.readline()
 server = f if len(f) > 0 else server
-the_app = Interface()
+the_app = Interface(0)
 
