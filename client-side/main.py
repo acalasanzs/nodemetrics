@@ -45,6 +45,7 @@ server = ft if len(ft) > 0 else server
 class Interface():
     def __init__(self, gui = True):
         self.connected = None
+        self.run = True
         try:
             update()
             self.send()
@@ -70,7 +71,6 @@ class Interface():
         else:
             """ CLI """
             self.gpu = False
-            self.run = True
             while self.run:
                 self.update_cli()
                 sleep(interval*4)
