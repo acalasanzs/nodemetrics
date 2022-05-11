@@ -16,7 +16,7 @@ colors = {
     "red": '#f6e58d',
     "blue": '#7ed6df'
 }
-from textwrap import fill
+from flask import Flask, request
 from time import sleep
 import tkinter as tk
 import tkinter.font as tkFont
@@ -34,7 +34,7 @@ first_monitor = get_monitors()[0]
 width = first_monitor.width
 height = first_monitor.height
 
-
+ms_interval = int(interval*1000)
 class Interface():
     def __init__(self, gui = True):
         if gui:
@@ -122,5 +122,5 @@ class Interface():
 f = open("server.txt",'r',encoding = 'utf-8')
 f = f.readline()
 server = f if len(f) > 0 else server
-the_app = Interface(0)
+the_app = Interface()
 
