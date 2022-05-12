@@ -4,21 +4,14 @@ const cors = require('cors');
 
 server.use(express.json());
 server.use(cors());
-var cpuUsage, ramUsage, diskUsage, gpuUsage;
-var gpu = false;
+var data;
 server.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send(data);
 })
-
 server.post('/data', (req, res) => {
-    if (req.body.usage.length > 3) {
-        gpu = true;
-        [cpuUsage, ramUsage, diskUsage, gpuUsage] = req.body.usage
-    }else {
-        [cpuUsage, ramUsage, diskUsage] = req.body.usage
-    }
+    data = req.body.usage
     res.send("SUCCESSFUL")
-    console.log(cpuUsage, ramUsage, diskUsage, gpuUsage)
+    console.log(data)
 });
 
 server.listen(3000, () => console.log("Server started!"));

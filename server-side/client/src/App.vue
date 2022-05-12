@@ -9,11 +9,12 @@
 
 <script>
     import axios from 'axios'
-
-    setInterval(() => {
-        axios.get('http://localhost:3000/data')
-    }, 250)
-        .then((response => {
-            console.log(response)
-        }))
+    async function update() {
+        const data = await axios.get('http://localhost:3000/')
+        draw(data.data)
+    }
+    function draw(data) {
+        console.log(data)
+    }
+    setInterval(update, 250);
 </script>
