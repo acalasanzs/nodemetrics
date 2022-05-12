@@ -46,11 +46,10 @@ class Interface():
     def __init__(self, gui = True):
         self.connected = None
         self.run = True
-        self.time = time()
         if gui:
             """ GUI """
             self.root = tk.Tk()
-            self.root.title("Nodemetrics Client v0.1.0")
+            self.root.title("Nodemetrics Client v1.0.0")
             self.root.protocol("WM_DELETE_WINDOW", self.destroy)
             #Es crea un Tk
             self.frame = tk.Frame(self.root, width=fwidth,height=fheight, bg=colors['bg-light'])
@@ -58,18 +57,26 @@ class Interface():
             self.frame.grid()
             self.frame.pack_propagate(False)
             self.widgets()
-            self.update_labels()
-            
+
             #Prevent resize
             self.root.resizable(width=False, height=False)
 
-            self.root.mainloop()
+            delta = 0
+            now = time()
+            while self.run:
+                delta += time() - now
+                if delta >= ms_interval:
+                    self.update_labels()
+                    now = time()
+                self.root.update_idletasks()
+                self.root.update()
+            
         else:
             """ CLI """
             self.gpu = False
             while self.run:
                 self.update_cli()
-                sleep(interval*4)
+                sleep(interval)
             pass
     def widgets(self):
         #GRAPHICAL USER INTERFACE
@@ -107,26 +114,29 @@ class Interface():
                 font=('Roboto',27))
         self.gpu.pack()
     def update_labels(self):
+        global ms_interval
         if self.run:
             update()
+            self.server.configure(text=f"TRYING ({server})")
             try:
                 result = self.send()
-                self.server.configure(text=result.content)
+                self.server.configure(text=result.content.decode('UTF-8')+ ", " + server)
+                ms_interval = int(interval*1000)
             except:
-                self.server.configure(text="SERVER NOT FOUND")
+                self.server.configure(text=f"SERVER NOT FOUND ({server})")
+                ms_interval = int(interval*1000)*8
             self.cpu.configure(text=f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%')
             self.mem.configure(text=f'RAM: {statistics["mem"]["percent"]}%')
             self.disk.configure(text=f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%""")
             if gpu_s > 0:
                 self.gpu.configure(text=f'GPU 0: {"{:.1f}".format(statistics["gpu"]["percent"])}')
-            self.root.after(ms_interval, self.update_labels)
     def update_cli(self):
         update()
         try:
             result = self.send()
-            self.server = result
+            self.server = text=result.content.decode('UTF-8')+ ", " + server
         except:
-            self.server = "(SERVER NOT FOUND) "+server
+            self.server = "(SERVER NOT FOUND) "+ server
         self.cpu = f'{statistics["cpu"]["count"]} CPU: {statistics["cpu"]["percent"]}%'
         self.mem = f'RAM: {statistics["mem"]["percent"]}%'
         self.disk = f"""'{statistics["disk"]["partition"]}': {statistics["disk"]["percent"]}%"""
