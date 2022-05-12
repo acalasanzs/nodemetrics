@@ -8,19 +8,12 @@
 </template>
 
 <script>
-    import CharacterViewer from './components/CharacterViewer.vue'
-    import CharacterCreator from './components/CharacterCreator.vue'
+    import axios from 'axios'
 
-    export default {
-        name: 'App',
-        components: {
-            CharacterViewer,
-            CharacterCreator
-        },
-        data: function () {
-            return {
-                toggle: "character-viewer"
-            }
-        }
-    }
+    setInterval(() => {
+        axios.get('http://localhost:3000/data')
+    }, 250)
+        .then((response => {
+            console.log(response)
+        }))
 </script>

@@ -159,4 +159,3 @@ if len(argv) > 1:
     the_app = Interface(False if argv[1] else True)
 else:
     the_app = Interface()
-
