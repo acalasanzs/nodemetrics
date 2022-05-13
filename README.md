@@ -2,6 +2,7 @@
 Online System Monitor
 
 ## Dependencies
+`npm install` on server-side/server/ and server-side/client/
 ### Vue
 `npm install -g @vue/cli` Vue Global NPM install
 ### Python

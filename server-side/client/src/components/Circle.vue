@@ -1,5 +1,5 @@
 <template>
-    <div role="progressbar" aria-label="circle" valuenow="65%" which={{id}} id={{id}}></div>
+    <div role="progressbar" aria-label="circle" valuenow="65%" :which="id" :id="id"></div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@
         props: ["id"],
         methods: {
             update(pointer, percent) {
-                const el = document.querySelector("#"+pointer+" .inside-circle");
+                const el = document.querySelector("#"+pointer);
                 el.setAttribute("valuenow", percent + "%");
                 el.style.background = `radial-gradient(closest-side, var(--bg) 90%, transparent 0 99.9%, var(--bg) 0),
     conic-gradient(var(--bg-2) calc(${percent} * 1%), var(--bg) 0)
