@@ -20,7 +20,7 @@
 
 <style scoped>
 div[role="progressbar"] {
-  --size: 7rem;
+  --size: 14rem;
   width: var(--size);
   height: var(--size);
   border-radius: 50%;
@@ -39,7 +39,7 @@ div[role="progressbar"]::before {
 }
 div[role="progressbar"]::after {
   position: absolute;
-  font-size: 0.75rem;
+  font-size: 1.5rem;
   bottom: 20px;
   content: attr(which);
   text-shadow: 0 0 3px var(--bg-2);

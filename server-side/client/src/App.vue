@@ -58,7 +58,7 @@ body {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: center;
-  gap: 3rem;
+  gap: 6rem;
   align-items: center;
 }
 </style>
