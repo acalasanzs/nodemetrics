@@ -3,7 +3,7 @@ from sys import platform        # Check platform
 from time import sleep          # For the interval
 import GPUtil                   # GPU usage
 
-interval = 0.25                 # Interval in seconds
+interval = 0.5                 # Interval in seconds
 statistics = dict()             # Object to send
 resume = ["cpu","mem","disk","gpu"] # All subproperties
 for prop in resume:

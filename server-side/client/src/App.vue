@@ -25,7 +25,7 @@
             circle_container.methods.update("GPU", data[3])
         }
     }
-    setInterval(update, 250);
+    setInterval(update, 500);
     export default {
         name: 'App',
         components: {
