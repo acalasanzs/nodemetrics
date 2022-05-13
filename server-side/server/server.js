@@ -14,4 +14,4 @@ server.post('/data', (req, res) => {
     console.log(data)
 });
 
-server.listen(3000, () => console.log("Server started!"));
+server.listen(3001, () => console.log("Server started!"));

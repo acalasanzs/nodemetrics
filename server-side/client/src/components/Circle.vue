@@ -1,31 +1,36 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,300);
-html{
-  --bg: #111111;
-  --color: #a29bfe;
-  --color-2: #a29bfe80;
-  --bg-2: #6c5ce7;
-}
-body {
-  font-family: "Roboto", sans-serif;
-  background: var(--bg);
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
+<template>
+    <div class="circle" :id="id">
+          <div class="circle-wrap">
+            <span>{{id}}</span>
+        <div class="circle">
+          <div class="mask full">
+            <div class="fill"></div>
+          </div>
+          <div class="mask half">
+            <div class="fill"></div>
+          </div>
+          <div class="inside-circle"> 0% </div>
+        </div>
+      </div>
+  </div>
+</template>
 
-}
-.circles{
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  gap: 3rem;
-  align-items: center;
-}
+<script>
+    export default {
+        name: 'circle_container',
+        props: ["id"],
+        methods: {
+            update(pointer, percent) {
+                const el = document.querySelector("#"+pointer+" .inside-circle");
+                el.textContent = percent + "%";
+                document.querySelector("#"+pointer+" .mask.full").style.transform = "rotate("+ 180 * (percent/100)+"deg";
+                document.querySelector("#"+pointer+" .mask.half .fill").style.transform = "rotate("+ (-180 * (percent/100))+"deg";
+            }
+        }
+    }
+</script>
+
+<style scoped>
 .circle-wrap {
   width: 135px;
   height: 135px;
@@ -74,26 +79,10 @@ body {
   font-weight: 700;
   font-size: 2em;
 }
-
-/* color animation */
-
 /* 3rd progress bar */
 .mask .fill {
   clip: rect(0px, 75px, 150px, 0px);
   background-color: var(--bg-2);
 }
 
-.mask.full,
-.circle .fill {
-  animation: fill ease-in-out 3s;
-  transform: rotate(135deg);
-}
-
-@keyframes fill{
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(135deg);
-  }
-}
+</style>
